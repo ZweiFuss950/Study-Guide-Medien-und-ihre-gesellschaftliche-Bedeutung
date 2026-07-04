@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Musterklausuren – Medien und ihre gesellschaftliche Bedeutung</title>
+    <style>
+        :root {
+            --bg: #f4f2ed;
+            --card-bg: #fffef9;
+            --text: #2c2416;
+            --text-light: #5c5344;
+            --accent: #8b5e3c;
+            --accent-hover: #6b3f22;
+            --border: #d9cebb;
+            --border-light: #e8e0d3;
+            --highlight: #fdf6e8;
+            --shadow: 0 2px 16px rgba(44, 36, 22, 0.07);
+            --radius: 10px;
+            --radius-sm: 6px;
+            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --font-body: 'Georgia', 'Times New Roman', 'Palatino Linotype', 'Book Antiqua', 'Palatino', serif;
+            --font-heading: 'Palatino Linotype', 'Book Antiqua', 'Palatino', 'Georgia', serif;
+            --font-mono: 'SF Mono', 'Consolas', 'Monaco', 'Courier New', monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            scroll-behavior: smooth;
+            font-size: 17px;
+        }
+        body {
+            font-family: var(--font-body);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            min-height: 100vh;
+            padding-bottom: 4rem;
+            background-image:
+                radial-gradient(ellipse at 50% 0%, rgba(139, 94, 60, 0.04) 0%, transparent 70%),
+                radial-gradient(ellipse at 80% 100%, rgba(139, 94, 60, 0.03) 0%, transparent 60%);
+        }
+
+        /* ── HEADER ─────────────────────── */
+        .header {
+            background: #fffef9;
+            border-bottom: 1px solid var(--border);
+            padding: 1.4rem 1.5rem;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 1px 8px rgba(0, 0, 0, 0.04);
+            backdrop-filter: blur(6px);
+        }
+        .header h1 {
+            font-family: var(--font-heading);
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            color: #3e2c1c;
+            margin-bottom: 0.15rem;
+        }
+        .header .subtitle {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            font-style: italic;
+        }
+        .header .exam-date {
+            display: inline-block;
+            margin-top: 0.3rem;
+            font-size: 0.8rem;
+            background: var(--highlight);
+            color: #8b5e3c;
+            padding: 0.25rem 0.9rem;
+            border-radius: 20px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            border: 1px solid #e8d9c0;
+        }
+
+        /* ── MAIN CONTAINER ────────────── */
+        .main-container {
+            max-width: 880px;
+            margin: 2rem auto;
+            padding: 0 1.2rem;
+        }
+
+        /* ── NAVIGATION ────────────────── */
+        .exam-nav {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            margin-bottom: 1.8rem;
+            flex-wrap: wrap;
+        }
+        .exam-nav button.nav-arrow {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 1.5px solid var(--border);
+            background: var(--card-bg);
+            cursor: pointer;
+            font-size: 1.3rem;
+            color: var(--accent);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-body);
+            line-height: 1;
+        }
+        .exam-nav button.nav-arrow:hover {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+            box-shadow: 0 4px 14px rgba(139, 94, 60, 0.25);
+            transform: translateY(-1px);
+        }
+        .exam-nav button.nav-arrow:active {
+            transform: scale(0.94);
+            transition: 0.1s;
+        }
+        .exam-nav .exam-tabs {
+            display: flex;
+            gap: 0.35rem;
+        }
+        .exam-nav .exam-tab {
+            padding: 0.55rem 1.4rem;
+            border-radius: 24px;
+            border: 1.5px solid var(--border);
+            background: var(--card-bg);
+            cursor: pointer;
+            font-family: var(--font-heading);
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-light);
+            transition: var(--transition);
+            white-space: nowrap;
+            letter-spacing: 0.01em;
+        }
+        .exam-nav .exam-tab:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: #fdf8f2;
+        }
+        .exam-nav .exam-tab.active {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+            box-shadow: 0 3px 12px rgba(139, 94, 60, 0.3);
+            cursor: default;
+        }
+        .exam-nav .exam-tab.active:hover {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        /* ── CARD / EXAM CONTENT ──────── */
+        .exam-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius);
+            padding: 2rem 2.2rem;
+            box-shadow: var(--shadow);
+            transition: opacity 0.3s ease;
+            position: relative;
+        }
+        .exam-card.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .exam-card.fade-in {
+            animation: fadeSlideIn 0.35s ease forwards;
+        }
+        @keyframes fadeSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .part-heading {
+            font-family: var(--font-heading);
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #3e2c1c;
+            margin: 1.8rem 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e8d9c0;
+            letter-spacing: 0.02em;
+        }
+        .part-heading:first-child {
+            margin-top: 0;
+        }
+        .part-subtitle {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            font-style: italic;
+            margin: -0.6rem 0 1.2rem;
+        }
+
+        /* ── QUESTION BLOCK ────────────── */
+        .question-block {
+            margin-bottom: 1.6rem;
+            padding: 1.2rem 1.3rem;
+            border-radius: var(--radius-sm);
+            background: #fdfcfa;
+            border: 1px solid transparent;
+            transition: var(--transition);
+            position: relative;
+        }
+        .question-block:hover {
+            border-color: #e8d9c0;
+            background: #fffefb;
+        }
+        .question-block .q-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .question-block .q-number {
+            font-weight: 700;
+            color: var(--accent);
+            font-family: var(--font-heading);
+            font-size: 1rem;
+            min-width: 2rem;
+            flex-shrink: 0;
+        }
+        .question-block .q-text {
+            flex: 1;
+            font-size: 0.95rem;
+            line-height: 1.55;
+        }
+        .question-block .q-source {
+            font-size: 0.72rem;
+            color: #a0917b;
+            font-style: italic;
+            margin-top: 0.15rem;
+        }
+        .question-block .hint-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 1.5px solid #d4c4a8;
+            background: #fdf8f2;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #8b5e3c;
+            transition: var(--transition);
+            flex-shrink: 0;
+            font-family: var(--font-body);
+            line-height: 1;
+            margin-top: 1px;
+        }
+        .question-block .hint-btn:hover {
+            background: #f0e2cc;
+            border-color: #8b5e3c;
+            box-shadow: 0 2px 8px rgba(139, 94, 60, 0.2);
+            transform: scale(1.08);
+        }
+        .question-block .hint-btn:active {
+            transform: scale(0.9);
+            transition: 0.1s;
+        }
+        .question-block textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 0.8rem 1rem;
+            border-radius: var(--radius-sm);
+            border: 1.5px solid #e0d6c5;
+            background: #fffefb;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            resize: vertical;
+            transition: var(--transition);
+            color: var(--text);
+            margin-top: 0.5rem;
+        }
+        .question-block textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(139, 94, 60, 0.06);
+            background: #fff;
+        }
+        .question-block textarea::placeholder {
+            color: #c4b99e;
+            font-style: italic;
+            font-size: 0.85rem;
+        }
+        .question-block.problem textarea {
+            min-height: 150px;
+        }
+        .question-block .sub-label {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #5c4a32;
+            margin-top: 0.5rem;
+            display: block;
+        }
+
+        /* ── HINT PANEL / MODAL ────────── */
+        .hint-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(30, 22, 12, 0.55);
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+        }
+        .hint-overlay.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .hint-panel {
+            background: #fffef9;
+            border-radius: var(--radius);
+            padding: 2rem 2.2rem;
+            max-width: 650px;
+            width: 92%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+            border: 1px solid var(--border);
+            position: relative;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        .hint-panel h3 {
+            font-family: var(--font-heading);
+            font-size: 1.1rem;
+            margin-bottom: 0.8rem;
+            color: #3e2c1c;
+            padding-right: 2rem;
+        }
+        .hint-panel .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1.1rem;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: 1.5px solid #d4c4a8;
+            background: #fdf8f2;
+            cursor: pointer;
+            font-size: 1.1rem;
+            color: #8b5e3c;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .hint-panel .close-btn:hover {
+            background: #e8d4b5;
+            border-color: #8b5e3c;
+        }
+        .hint-panel .hint-content {
+            color: #4a3d2a;
+            font-size: 0.88rem;
+            white-space: pre-line;
+            line-height: 1.65;
+        }
+        .hint-panel .hint-content strong {
+            color: #3e2c1c;
+        }
+
+        /* ── TOOLBAR ───────────────────── */
+        .toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 0.6rem 1.6rem;
+            border-radius: 24px;
+            border: 1.5px solid var(--border);
+            background: var(--card-bg);
+            cursor: pointer;
+            font-family: var(--font-heading);
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--text-light);
+            transition: var(--transition);
+            letter-spacing: 0.02em;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: #fdf8f2;
+            box-shadow: 0 3px 12px rgba(139, 94, 60, 0.15);
+        }
+        .btn.save-btn {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+            font-weight: 700;
+        }
+        .btn.save-btn:hover {
+            background: var(--accent-hover);
+            border-color: var(--accent-hover);
+            box-shadow: 0 6px 20px rgba(139, 94, 60, 0.35);
+            transform: translateY(-2px);
+        }
+        .btn.save-btn:active {
+            transform: scale(0.95);
+            transition: 0.1s;
+        }
+        .btn.danger-btn {
+            border-color: #c99;
+            color: #a33;
+            background: #fff5f5;
+        }
+        .btn.danger-btn:hover {
+            border-color: #a33;
+            background: #ffe8e8;
+            color: #822;
+            box-shadow: 0 3px 12px rgba(180, 60, 60, 0.2);
+        }
+        .save-status {
+            font-size: 0.78rem;
+            color: #7a9a5c;
+            font-style: italic;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            animation: pulseFade 2s ease forwards;
+        }
+        @keyframes pulseFade {
+            0% {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            40% {
+                opacity: 1;
+                transform: scale(1.04);
+            }
+            100% {
+                opacity: 0.85;
+                transform: scale(1);
+            }
+        }
+        .save-status .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #7a9a5c;
+            display: inline-block;
+            animation: dotPulse 1.5s infinite;
+        }
+        @keyframes dotPulse {
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(122, 154, 92, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 0 8px rgba(122, 154, 92, 0);
+            }
+        }
+
+        /* ── KEYBOARD HINT ─────────────── */
+        .kbd-hint {
+            text-align: center;
+            font-size: 0.7rem;
+            color: #b0a590;
+            margin-top: 0.8rem;
+            letter-spacing: 0.03em;
+        }
+        .kbd-hint kbd {
+            display: inline-block;
+            background: #e8e0d3;
+            border-radius: 3px;
+            padding: 0.1rem 0.4rem;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            border: 1px solid #d4c8b4;
+            margin: 0 0.15rem;
+        }
+
+        /* ── RESPONSIVE ────────────────── */
+        @media (max-width: 700px) {
+            .exam-card {
+                padding: 1.2rem 1rem;
+            }
+            .question-block {
+                padding: 0.8rem 0.7rem;
+            }
+            .exam-nav .exam-tab {
+                padding: 0.45rem 0.9rem;
+                font-size: 0.78rem;
+            }
+            .exam-nav button.nav-arrow {
+                width: 36px;
+                height: 36px;
+                font-size: 1rem;
+            }
+            .header h1 {
+                font-size: 1.3rem;
+            }
+            .btn {
+                padding: 0.5rem 1.1rem;
+                font-size: 0.8rem;
+            }
+            .hint-panel {
+                padding: 1.3rem 1rem;
+                width: 96%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ═══════════ HEADER ═══════════ -->
+    <header class="header">
+        <h1>Musterklausuren</h1>
+        <div class="subtitle">Medien und ihre gesellschaftliche Bedeutung</div>
+        <div class="exam-date">📅 Klausur: 15. Juli, 16:00 Uhr &nbsp;|&nbsp; Raum B254</div>
+    </header>
+
+    <!-- ═══════════ MAIN CONTAINER ═══════════ -->
+    <div class="main-container">
+
+        <!-- Navigation -->
+        <nav class="exam-nav" id="examNav">
+            <button class="nav-arrow" id="btnPrev" title="Vorherige Klausur (← Pfeiltaste)" aria-label="Zurück">←</button>
+            <div class="exam-tabs">
+                <button class="exam-tab active" data-exam="0">Klausur 1</button>
+                <button class="exam-tab" data-exam="1">Klausur 2</button>
+                <button class="exam-tab" data-exam="2">Klausur 3</button>
+            </div>
+            <button class="nav-arrow" id="btnNext" title="Nächste Klausur (→ Pfeiltaste)" aria-label="Weiter">→</button>
+        </nav>
+
+        <!-- Exam Card -->
+        <div class="exam-card" id="examCard">
+            <!-- Dynamisch gefüllt per JS -->
+        </div>
+
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <button class="btn save-btn" id="btnSave" title="Alle Antworten speichern">💾 Speichern</button>
+            <button class="btn" id="btnLoad" title="Gespeicherte Antworten laden">📂 Laden</button>
+            <button class="btn danger-btn" id="btnClear" title="Alle gespeicherten Daten löschen">🗑️ Daten löschen</button>
+            <span class="save-status" id="saveStatus" style="display:none;"><span class="dot"></span> Gespeichert</span>
+        </div>
+        <div class="kbd-hint">
+            💡 Tipp: Mit <kbd>←</kbd> <kbd>→</kbd> Pfeiltasten zwischen den Klausuren wechseln &nbsp;|&nbsp;
+            <kbd>Strg</kbd>+<kbd>S</kbd> zum Speichern
+        </div>
+    </div>
+
+    <!-- ═══════════ HINT OVERLAY ═══════════ -->
+    <div class="hint-overlay" id="hintOverlay">
+        <div class="hint-panel" id="hintPanel">
+            <button class="close-btn" id="hintClose" title="Schließen">✕</button>
+            <h3 id="hintTitle">💡 Lösungshinweis</h3>
+            <div class="hint-content" id="hintContent"></div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // ──────────────────────────────────────
+            // DATEN: Alle drei Musterklausuren
+            // ──────────────────────────────────────
+            const examData = [{
+                id: 'exam1',
+                title: 'Musterklausur 1',
+                parts: [{
+                    heading: 'Teil I: Wissensfragen',
+                    subtitle: 'Beantworten Sie idealerweise alle 5 (nur die 4 besten werden gewertet), je max. 10 Punkte → max. 40 Punkte',
+                    questions: [{
+                        id: 'e1q1',
+                        number: '1.',
+                        source: '(Foliensatz 1 – Medienbegriff)',
+                        text: 'Nennen und erläutern Sie die drei Verwendungszusammenhänge, in denen der Begriff „Medium" laut Faulstich benutzt wird.',
+                        hint: '<strong>Drei Verwendungszusammenhänge von „Medium" (Faulstich):</strong>\n(1) <strong>Allgemeiner Sprachgebrauch</strong> als „Mittel"/Vermittelndes;\n(2) <strong>Fachbegriff in einzelnen Disziplinen</strong>, z. B. „Medium Kunst" oder „Medium Musik" – meist im übertragenen Sinn bzw. als „Instrument";\n(3) <strong>Zentraler Begriff in der Kommunikations- bzw. Medienwissenschaft.</strong>',
+                        isProblem: false
+                    }, {
+                        id: 'e1q2',
+                        number: '2.',
+                        source: '(Foliensatz 1 – Medienbegriff)',
+                        text: 'Differenzieren Sie nach Pross zwischen primären, sekundären und tertiären Medien und nennen Sie jeweils ein Beispiel.',
+                        hint: '<strong>Primäre Medien:</strong> menschlicher Elementarkontakt, keine Technik nötig (z. B. Sprache).\n<strong>Sekundäre Medien:</strong> Technik nur auf Produktionsseite nötig (z. B. Druckerzeugnisse).\n<strong>Tertiäre Medien:</strong> Technik bei Sender UND Empfänger nötig (z. B. TV, Schallplatte).',
+                        isProblem: false
+                    }, {
+                        id: 'e1q3',
+                        number: '3.',
+                        source: '(Foliensatz 2 – McLuhan)',
+                        text: 'Was meint McLuhan mit seinem berühmten Zitat „The Medium is the message"?',
+                        hint: 'Nicht der Inhalt einer Kommunikation ist entscheidend für ihre gesellschaftliche Wirkung, sondern das <strong>Medium bzw. die Technik selbst</strong> – weil sie Maßstab, Tempo und Schema der menschlichen Situation verändert. Beispiel: Ob eine Maschine Cornflakes oder Cadillacs produziert, ist für die Veränderung der menschlichen Arbeit gleichgültig – entscheidend ist die Maschine selbst.',
+                        isProblem: false
+                    }, {
+                        id: 'e1q4',
+                        number: '4.',
+                        source: '(Foliensatz 3 – Rundfunk)',
+                        text: 'Was versteht man unter der „dualen Rundfunkordnung" in Deutschland?',
+                        hint: '<strong>Öffentlich-rechtlicher und privater Rundfunk existieren nebeneinander.</strong> Grundversorgung obliegt den öffentlich-rechtlichen Anstalten, da diese technisch von allen empfangbar sind, wegen Gebührenteilfinanzierung nicht im gleichen Maße auf Einschaltquoten angewiesen sind und strenge Binnenpluralismus-Vorgaben erfüllen müssen. Der Privatfunk muss dafür nicht dieselben hohen Vielfaltsanforderungen erfüllen, da Vielfalt hier über <strong>Außenpluralismus</strong> (viele unterschiedliche Anbieter) entsteht.',
+                        isProblem: false
+                    }, {
+                        id: 'e1q5',
+                        number: '5.',
+                        source: '(Foliensatz 7 – Yale Studies)',
+                        text: 'Was besagt die „Inoculation Theory" im Kontext der Yale Studies?',
+                        hint: '<strong>Zweiseitige Argumentation</strong> (Pro- und Contra-Argumente) kann das Publikum widerstandsfähiger gegenüber späterer Gegenargumentation machen. Dieser Effekt wirkt aber vor allem bei einem <strong>gut gebildeten Publikum</strong>; bei geringerem Bildungsstand kann einseitige Argumentation sinnvoller sein.',
+                        isProblem: false
+                    }]
+                }, {
+                    heading: 'Teil II: Problemorientierte Fragen',
+                    subtitle: 'Bearbeiten Sie idealerweise beide (nur die bessere wird gewertet), max. 20 Punkte. Überzeugen Sie mit einer ausgewogenen Darstellung in mehr als 3 Sätzen.',
+                    questions: [{
+                        id: 'e1p1',
+                        number: '1.',
+                        source: '(Foliensatz 2 – McLuhan)',
+                        text: 'Nach McLuhan sind Medien „Erweiterungen" menschlicher Sinne und Körperfunktionen, und ihre gesellschaftliche Wirkung liegt nicht im Inhalt, sondern im Medium selbst.',
+                        subParts: [
+                            'a) Erläutern Sie diesen Gedanken anhand eines Beispiels Ihrer Wahl (z. B. Smartphone, soziale Medien, Streaming).',
+                            'b) Diskutieren Sie, inwiefern diese These heute – über 60 Jahre nach ihrer Formulierung – noch trägt bzw. wo Sie Grenzen dieser Sichtweise sehen.'
+                        ],
+                        hint: '<strong>Ansatzpunkte:</strong>\n<strong>a)</strong> Am Beispiel Smartphone lässt sich zeigen, dass nicht der einzelne Inhalt (eine App, eine Nachricht), sondern die <strong>permanente Verfügbarkeit und Vernetzung selbst</strong> unser Verhalten, unsere Aufmerksamkeitsspanne und unsere Wahrnehmung verändert.\n<strong>b)</strong> Für die Diskussion bieten sich beide Richtungen an: Die These bleibt insofern aktuell, als digitale Infrastrukturen tatsächlich unabhängig vom konkreten Inhalt Verhalten prägen; kritisch anmerken lässt sich aber, dass <strong>Inhalte</strong> (z. B. Desinformation, algorithmische Kuratierung) heute durchaus eigenständige, vom „Medium" unterscheidbare Wirkungen entfalten können – die strikte Trennung von Medium und Botschaft wirkt daher teils zu vereinfachend.',
+                        isProblem: true
+                    }, {
+                        id: 'e1p2',
+                        number: '2.',
+                        source: '(Foliensatz 3 – Rundfunk)',
+                        text: 'Die duale Rundfunkordnung weist dem öffentlich-rechtlichen Rundfunk eine besondere Verantwortung für die Grundversorgung zu, während der private Rundfunk geringeren Vielfaltsanforderungen unterliegt.',
+                        subParts: [
+                            'a) Erläutern Sie, warum der Gesetzgeber diese Aufgabenteilung so vorgenommen hat.',
+                            'b) Diskutieren Sie, ob diese Begründung angesichts der heutigen Mediennutzung (z. B. Streaming, Online-Angebote) noch zeitgemäß ist (Vor- und Nachteile einer Beibehaltung bzw. Reform).'
+                        ],
+                        hint: '<strong>Ansatzpunkte:</strong>\n<strong>a)</strong> Die Zuweisung der Grundversorgung an den öffentlich-rechtlichen Rundfunk beruht auf dessen <strong>universeller Empfangbarkeit</strong>, der <strong>Unabhängigkeit von Werbe-/Quoteneinnahmen</strong> sowie der gesetzlich vorgeschriebenen <strong>Binnenpluralismus-Pflicht</strong>.\n<strong>b)</strong> Diskutieren lässt sich, ob diese Logik im Streaming-Zeitalter noch trägt, da „universelle Empfangbarkeit" durch Plattformvielfalt an Bedeutung verliert; gleichzeitig lässt sich argumentieren, dass gerade in einer fragmentierten, algorithmisch personalisierten Medienlandschaft eine <strong>institutionell abgesicherte Ausgewogenheitspflicht</strong> wichtiger denn je ist.',
+                        isProblem: true
+                    }]
+                }]
+            }, {
+                id: 'exam2',
+                title: 'Musterklausur 2',
+                parts: [{
+                    heading: 'Teil I: Wissensfragen',
+                    subtitle: 'Beantworten Sie idealerweise alle 5 (nur die 4 besten werden gewertet), je max. 10 Punkte → max. 40 Punkte',
+                    questions: [{
+                        id: 'e2q1',
+                        number: '1.',
+                        source: '(Foliensatz 1 – Medienbegriff)',
+                        text: 'Erläutern Sie den Begriff der „quartären Medien" und nennen Sie zwei Beispiele.',
+                        hint: '<strong>Quartäre Medien</strong> sind <strong>internetbasierte Tertiärmedien</strong>, die sich – anders als klassische Tertiärmedien – nicht über die Eigenschaften bestimmter Endgeräte definieren lassen, da die zugehörigen Online-Dienste mit unterschiedlichsten internetfähigen Geräten genutzt werden können.\n<strong>Beispiele:</strong> E-Mail, IPTV, Voice over IP, Videokonferenz, WWW.',
+                        isProblem: false
+                    }, {
+                        id: 'e2q2',
+                        number: '2.',
+                        source: '(Foliensatz 2 – McLuhan)',
+                        text: 'Erläutern Sie an einem Beispiel, was McLuhan damit meint, dass „auch die Inhalte von Medien wiederum Medien sein können".',
+                        hint: 'McLuhan zufolge sind auch die Inhalte von Medien selbst wieder Medien: Der <strong>Inhalt eines Films</strong> ist das Buch (die zugrunde liegende Erzählung), der <strong>Inhalt eines Buchs</strong> ist die Sprache. Medien sind also <strong>ineinander verschachtelt</strong>.',
+                        isProblem: false
+                    }, {
+                        id: 'e2q3',
+                        number: '3.',
+                        source: '(Foliensatz 3 – Rundfunk)',
+                        text: 'Was bedeutet der Grundsatz der „Staatsferne des Rundfunks"?',
+                        hint: '<strong>Staatsferne</strong> bedeutet: Der Staat hat die Aufgabe, durch Regelung des organisatorischen Rahmens für meinungsbezogene Vielfalt im Rundfunk zu sorgen, darf aber <strong>weder personell noch inhaltlich</strong> Einfluss auf die konkrete Programmgestaltung nehmen.',
+                        isProblem: false
+                    }, {
+                        id: 'e2q4',
+                        number: '4.',
+                        source: '(Foliensatz 7 – Medienwirkungen)',
+                        text: 'Nennen und erläutern Sie mindestens vier der sechs Ebenen von Medienwirkungen nach Bryant/Zillmann.',
+                        hint: '<strong>Sechs Ebenen von Medienwirkungen (vier nennen genügt):</strong>\n(1) <strong>Kognitive Effekte</strong> (Wissen/Wahrnehmungen)\n(2) <strong>Einstellungseffekte</strong> (Meinungen/Überzeugungen/Werte)\n(3) <strong>Affektive Effekte</strong> (Emotionen wie Angst oder Euphorie)\n(4) <strong>Konative Effekte</strong> (Verhalten)\n(5) <strong>Physiologische Effekte</strong> (Erregung/körperliche Reaktionen)\n(6) <strong>Soziale Effekte</strong> (gesellschaftliche Auswirkungen)',
+                        isProblem: false
+                    }, {
+                        id: 'e2q5',
+                        number: '5.',
+                        source: '(Foliensatz 11/12 – Hostile Media Effect)',
+                        text: 'Was versteht man unter dem „Hostile-Media-Effekt"?',
+                        hint: 'Der <strong>Hostile-Media-Effekt</strong> beschreibt, dass Mediennutzer mit einer klaren Position zu einem Thema auch bei neutraler bzw. ausgewogener Berichterstattung den Eindruck haben, diese sei unausgewogen und benachteilige die eigene Position – sie nehmen also eine <strong>„feindselige" Verzerrung</strong> zugunsten der Gegenseite wahr, selbst wenn der Beitrag eigentlich neutral ist.',
+                        isProblem: false
+                    }]
+                }, {
+                    heading: 'Teil II: Problemorientierte Fragen',
+                    subtitle: 'Bearbeiten Sie idealerweise beide (nur die bessere wird gewertet), max. 20 Punkte.',
+                    questions: [{
+                        id: 'e2p1',
+                        number: '1.',
+                        source: '(Foliensatz 7 – Yale Studies)',
+                        text: 'Die Yale Studies fanden u. a. heraus, dass sowohl die Art der Argumentation (ein- vs. zweiseitig) als auch der Einsatz von Furchtappellen den Erfolg persuasiver Kommunikation beeinflussen.',
+                        subParts: [
+                            'a) Stellen Sie die wesentlichen Befunde zu diesen beiden Aspekten kurz dar.',
+                            'b) Entwickeln Sie auf dieser Grundlage Empfehlungen für die Gestaltung einer Kampagne (z. B. eine Aufklärungskampagne zu einem Gesundheitsthema) und diskutieren Sie, welche Zielgruppen- bzw. Situationsmerkmale dabei zu berücksichtigen wären.'
+                        ],
+                        hint: '<strong>Ansatzpunkte:</strong>\n<strong>a)</strong> Zweiseitige Argumentation erhöht die Widerstandsfähigkeit gegenüber späterer Gegenargumentation, wirkt aber vor allem bei gebildetem Publikum. Bei Furchtappellen zeigt die neuere Forschung eher, dass stärkere Angstappelle auch stärkere persuasive Wirkung haben können – allerdings kann es bei übertrieben starken Appellen zu einem <strong>Bumerang-Effekt</strong> kommen; schwächere Appelle eignen sich eher zur Beendigung bestehenden Verhaltens, stärkere eher zur Vermeidung zukünftigen Verhaltens.\n<strong>b)</strong> Für eine Kampagne ließe sich ableiten: Bei einem eher gebildeten Zielpublikum zweiseitige Argumentation nutzen, bei geringerem Bildungsniveau einseitig und mit klar formulierter Schlussfolgerung arbeiten; Furchtappelle <strong>dosiert einsetzen</strong> und auf die Art des gewünschten Verhaltens (Beenden vs. Vermeiden) abstimmen.',
+                        isProblem: true
+                    }, {
+                        id: 'e2p2',
+                        number: '2.',
+                        source: '(Foliensatz 11/12 – Nutzerkommentare)',
+                        text: 'Studien zu Nutzerkommentaren zeigen u. a. den sogenannten „Nasty Effect": Unhöfliche Kommentare wirken sich negativ auf die wahrgenommene Qualität eines Artikels aus, selbst wenn der Artikel selbst neutral berichtet.',
+                        subParts: [
+                            'a) Erläutern Sie den Mechanismus, wie Nutzerkommentare die Bewertung eines Artikels durch andere Leser beeinflussen können (Befunde zu Unparteilichkeit, Genauigkeit, Nasty Effect).',
+                            'b) Diskutieren Sie, welche Moderationsstrategien Online-Redaktionen einsetzen könnten, um negative Effekte von Kommentaren zu begrenzen, und wägen Sie deren Vor- und Nachteile ab (z. B. Registrierungspflicht, Vor-/Nachmoderation, Community-Regeln, automatisierte Filter).'
+                        ],
+                        hint: '<strong>Ansatzpunkte:</strong>\n<strong>a)</strong> Kommentare wirken als <strong>Anhaltspunkte für die Bewertung</strong> eines Artikels: Loben Kommentare Unparteilichkeit oder Genauigkeit, bewerten Leser den Artikel entsprechend positiver – und umgekehrt. Unhöfliche, beleidigende Kommentare führen zusätzlich dazu, dass der Artikel selbst als voreingenommener wahrgenommen wird (<strong>Nasty Effect</strong>).\n<strong>b)</strong> Mögliche Strategien wie Vor- oder Nachmoderation, Klarnamenpflicht oder automatisierte Filter erhöhen tendenziell die Kommentarqualität, verursachen aber Aufwand bzw. können die Meinungsvielfalt einschränken; eine komplette Abschaltung vermeidet negative Effekte, verzichtet aber auf Interaktion – die Abwägung hängt stark von den redaktionellen Ressourcen und dem Themenfeld ab.',
+                        isProblem: true
+                    }]
+                }]
+            }, {
+                id: 'exam3',
+                title: 'Musterklausur 3',
+                parts: [{
+                    heading: 'Teil I: Wissensfragen',
+                    subtitle: 'Beantworten Sie idealerweise alle 5 (nur die 4 besten werden gewertet), je max. 10 Punkte → max. 40 Punkte',
+                    questions: [{
+                        id: 'e3q1',
+                        number: '1.',
+                        source: '(Foliensatz 1 – Medienbegriff)',
+                        text: 'Erläutern Sie die vier „Komponenten-Ebenen des Medienbegriffs" nach Schmidt/Zurstiege.',
+                        hint: '<strong>Vier Komponenten-Ebenen (Schmidt/Zurstiege):</strong>\n(1) <strong>Kommunikationsinstrumente</strong> – natürliche Sprachen und materielle Zeichen;\n(2) <strong>Medientechniken</strong> – zur Herstellung und Verbreitung von Medienangeboten;\n(3) <strong>Institutionelle Einrichtungen</strong> – z. B. Zeitungsverlage oder TV-Anstalten, die Medientechniken betreiben, verwalten und finanzieren;\n(4) <strong>Die Medienangebote selbst</strong>, die aus dem Zusammenwirken der drei vorherigen Ebenen entstehen (z. B. Zeitungsbeiträge, Sendungen).',
+                        isProblem: false
+                    }, {
+                        id: 'e3q2',
+                        number: '2.',
+                        source: '(Foliensatz 2 – McLuhan)',
+                        text: 'Welchen Medienbegriff vertritt McLuhan, und was unterscheidet ihn von einem engeren, auf Informationsübertragung beschränkten Medienbegriff?',
+                        hint: 'McLuhan vertritt einen <strong>sehr weiten, teils unspezifischen Medienbegriff</strong>: Er beschränkt sich nicht auf Medien der Informationsübertragung, sondern versteht <strong>alle möglichen Techniken als Medien</strong> – so ist für ihn ein Buch ebenso ein Medium wie die Eisenbahn oder ein Hammer.',
+                        isProblem: false
+                    }, {
+                        id: 'e3q3',
+                        number: '3.',
+                        source: '(Foliensatz 7 – Medienwirkungsforschung)',
+                        text: 'Beschreiben Sie kurz die Kernaussage der Phase 1 („Propaganda und Medienallmacht") der Medienwirkungsforschung und nennen Sie das zugehörige Wirkungsmodell.',
+                        hint: '<strong>Kernaussage Phase 1:</strong> Vorstellung <strong>starker, direkter Medienwirkungen</strong> – Medienbotschaften können große Gruppen von Menschen direkt und relativ einheitlich beeinflussen, individuelle Unterschiede zwischen Rezipienten werden kaum berücksichtigt.\n<strong>Zugehöriges Modell:</strong> das <strong>Stimulus-Response-Modell</strong> (auch Magic Bullet Theory, Transmission Belt Theory oder Hypodermic Needle Concept genannt).',
+                        isProblem: false
+                    }, {
+                        id: 'e3q4',
+                        number: '4.',
+                        source: '(Foliensatz 9 – Schweigespirale)',
+                        text: 'Was versteht Noelle-Neumann unter dem „quasi-statistischen Organ", und wozu dient es?',
+                        hint: 'Das <strong>quasi-statistische Organ</strong> ist die Fähigkeit des Menschen, durch ständige Umweltbeobachtung Veränderungen in der Meinungsverteilung (dem „Meinungsklima") zu erkennen. Es dient als Grundlage dafür, einzuschätzen, welche Meinung gerade mehrheits- bzw. minderheitsfähig ist – und damit als Grundlage der Entscheidung, die eigene Meinung zu äußern oder eher zu schweigen.',
+                        isProblem: false
+                    }, {
+                        id: 'e3q5',
+                        number: '5.',
+                        source: '(Foliensatz 11/12 – Nutzerkommentare)',
+                        text: 'Welchen Einfluss haben Nutzerkommentare laut Forschung auf die von Lesern wahrgenommene journalistische Qualität eines Artikels?',
+                        hint: 'Nutzerkommentare dienen als <strong>Anhaltspunkt für die eigene Bewertung</strong>: Loben Kommentare die Unparteilichkeit oder Genauigkeit eines Artikels, wird dieser auch von anderen Lesern entsprechend positiver eingeschätzt (und umgekehrt). <strong>Unhöfliche Kommentare</strong> führen dazu, dass der Artikel selbst eher als voreingenommen wahrgenommen wird (<strong>Nasty Effect</strong>).',
+                        isProblem: false
+                    }]
+                }, {
+                    heading: 'Teil II: Problemorientierte Fragen',
+                    subtitle: 'Bearbeiten Sie idealerweise beide (nur die bessere wird gewertet), max. 20 Punkte.',
+                    questions: [{
+                        id: 'e3p1',
+                        number: '1.',
+                        source: '(Foliensatz 9 – Schweigespirale)',
+                        text: 'Die Theorie der Schweigespirale erklärt, warum Menschen ihre Meinung in der Öffentlichkeit äußern oder lieber zurückhalten.',
+                        subParts: [
+                            'a) Stellen Sie die zentralen Grundannahmen der Theorie dar (Isolationsfurcht, öffentliche Meinung, quasi-statistisches Organ).',
+                            'b) Erläutern Sie den von Noelle-Neumann beschriebenen „dynamischen Prozess" der Schweigespirale und diskutieren Sie, welche Folgen dieser für die öffentliche Meinungsbildung insgesamt haben kann.'
+                        ],
+                        hint: '<strong>Ansatzpunkte:</strong>\n<strong>a) Grundannahmen:</strong> Menschen fürchten in allen Gesellschaften <strong>soziale Isolation</strong>; diese Isolationsfurcht erzeugt Anpassungsdruck an die vorherrschende Meinung. „Öffentliche Meinung" bezeichnet dabei wertgeladene Positionen, die man öffentlich zeigen muss bzw. kann, ohne sich zu isolieren. Über das <strong>quasi-statistische Organ</strong> beobachten Menschen ständig ihre Umwelt, um das Meinungsklima einzuschätzen.\n<strong>b) Der dynamische Prozess:</strong> Wer eine zunehmende Zustimmung zur eigenen Meinung wahrnimmt, äußert sich öffentlicher; wer einen Rückgang wahrnimmt, verfällt eher in Schweigen – dadurch entsteht eine <strong>optische/akustische Täuschung</strong> über die wirklichen Mehrheitsverhältnisse, die sich selbst verstärkt. Folge kann sein, dass eine Meinung bis auf einen „harten Kern" zurückgedrängt wird – die öffentlich wahrgenommene Meinungsverteilung entspricht dann nicht mehr der tatsächlichen.',
+                        isProblem: true
+                    }, {
+                        id: 'e3p2',
+                        number: '2.',
+                        source: '(Foliensatz 11/12 – Hostile Media Effect)',
+                        text: 'Der „Hostile-Media-Effekt" beschreibt, dass Personen mit klarer Meinung zu einem Thema auch neutrale Berichterstattung als parteiisch zugunsten der Gegenseite wahrnehmen.',
+                        subParts: [
+                            'a) Erläutern Sie den Effekt anhand der Studie von Vallone et al. zur Berichterstattung über den Nahost-Konflikt.',
+                            'b) Diskutieren Sie, welche Konsequenzen sich daraus für Redaktionen bzw. für den Umgang mit Vorwürfen mangelnder Ausgewogenheit ergeben könnten.'
+                        ],
+                        hint: '<strong>Ansatzpunkte:</strong>\n<strong>a)</strong> In der Studie von Vallone et al. bewerteten pro-israelisch, pro-arabisch und neutral eingestellte Zuschauer denselben (als neutral geltenden) TV-Beitrag zum Nahost-Konflikt: <strong>Beide parteiischen Gruppen</strong> nahmen die Berichterstattung jeweils als zugunsten der Gegenseite verzerrt wahr, obwohl sie identisches Material sahen.\n<strong>b)</strong> Für Redaktionen ergibt sich daraus, dass Ausgewogenheitsvorwürfe von Personen mit starker Meinung nicht zwangsläufig auf tatsächliche redaktionelle Schieflagen hindeuten; gleichzeitig sollten Redaktionen dies nicht als Freibrief nehmen, echte Einseitigkeit zu ignorieren – sinnvoll erscheinen <strong>Transparenz über journalistische Standards</strong> und eine Unterscheidung zwischen begründeter Kritik und wahrnehmungsbedingter Verzerrung.',
+                        isProblem: true
+                    }]
+                }]
+            }];
+
+            // ──────────────────────────────────────
+            // STATE
+            // ──────────────────────────────────────
+            let currentExamIndex = 0;
+            const STORAGE_KEY_PREFIX = 'musterklausur_media_';
+
+            // ──────────────────────────────────────
+            // DOM REFS
+            // ──────────────────────────────────────
+            const examCard = document.getElementById('examCard');
+            const btnPrev = document.getElementById('btnPrev');
+            const btnNext = document.getElementById('btnNext');
+            const btnSave = document.getElementById('btnSave');
+            const btnLoad = document.getElementById('btnLoad');
+            const btnClear = document.getElementById('btnClear');
+            const saveStatus = document.getElementById('saveStatus');
+            const hintOverlay = document.getElementById('hintOverlay');
+            const hintPanel = document.getElementById('hintPanel');
+            const hintTitle = document.getElementById('hintTitle');
+            const hintContent = document.getElementById('hintContent');
+            const hintClose = document.getElementById('hintClose');
+            const examTabs = document.querySelectorAll('.exam-tab');
+
+            // ──────────────────────────────────────
+            // FUNCTIONS
+            // ──────────────────────────────────────
+            function getStorageKey(examId) {
+                return STORAGE_KEY_PREFIX + examId;
+            }
+
+            function saveAllAnswers() {
+                const allTextareas = examCard.querySelectorAll('textarea');
+                const data = {};
+                allTextareas.forEach(ta => {
+                    if (ta.dataset.questionId) {
+                        data[ta.dataset.questionId] = ta.value;
+                    }
+                });
+                // Save under current exam key
+                const examId = examData[currentExamIndex].id;
+                const key = getStorageKey(examId);
+                try {
+                    localStorage.setItem(key, JSON.stringify(data));
+                    showSaveStatus();
+                } catch (e) {
+                    alert('⚠️ Speichern fehlgeschlagen. Möglicherweise ist der lokale Speicher voll.');
+                }
+            }
+
+            function loadAnswersForCurrentExam() {
+                const examId = examData[currentExamIndex].id;
+                const key = getStorageKey(examId);
+                const raw = localStorage.getItem(key);
+                if (!raw) return;
+                try {
+                    const data = JSON.parse(raw);
+                    const allTextareas = examCard.querySelectorAll('textarea');
+                    allTextareas.forEach(ta => {
+                        if (ta.dataset.questionId && data[ta.dataset.questionId] !== undefined) {
+                            ta.value = data[ta.dataset.questionId];
+                        }
+                    });
+                } catch (e) {
+                    console.warn('Fehler beim Laden der Daten:', e);
+                }
+            }
+
+            function clearAllData() {
+                if (confirm(
+                        '⚠️ Möchten Sie wirklich ALLE gespeicherten Antworten für ALLE drei Klausuren unwiderruflich löschen? Diese Aktion kann nicht rückgängig gemacht werden.'
+                        )) {
+                    examData.forEach(exam => {
+                        localStorage.removeItem(getStorageKey(exam.id));
+                    });
+                    // Clear current textareas
+                    const allTextareas = examCard.querySelectorAll('textarea');
+                    allTextareas.forEach(ta => { ta.value = ''; });
+                    saveStatus.style.display = 'none';
+                    alert('✅ Alle gespeicherten Daten wurden gelöscht.');
+                }
+            }
+
+            function showSaveStatus() {
+                saveStatus.style.display = 'flex';
+                saveStatus.style.animation = 'none';
+                void saveStatus.offsetWidth;
+                saveStatus.style.animation = 'pulseFade 2s ease forwards';
+                setTimeout(() => {
+                    if (saveStatus.style.animation === 'pulseFade 2s ease forwards') {
+                        saveStatus.style.opacity = '0.7';
+                    }
+                }, 2500);
+            }
+
+            function autoSave() {
+                saveAllAnswers();
+            }
+
+            // Debounce helper
+            let autoSaveTimeout;
+            function debouncedAutoSave() {
+                clearTimeout(autoSaveTimeout);
+                autoSaveTimeout = setTimeout(autoSave, 800);
+            }
+
+            // ──────────────────────────────────────
+            // RENDER EXAM
+            // ──────────────────────────────────────
+            function renderExam(index) {
+                const exam = examData[index];
+                let html = '';
+                exam.parts.forEach((part, pIdx) => {
+                    html += `<h2 class="part-heading">${part.heading}</h2>`;
+                    if (part.subtitle) {
+                        html += `<p class="part-subtitle">${part.subtitle}</p>`;
+                    }
+                    part.questions.forEach((q, qIdx) => {
+                        const blockClass = q.isProblem ? 'question-block problem' : 'question-block';
+                        html += `<div class="${blockClass}">`;
+                        html += `<div class="q-header">`;
+                        html +=
+                            `<span class="q-number">${q.number}</span>`;
+                        html += `<div class="q-text">`;
+                        html += `<span>${q.text}</span>`;
+                        if (q.source) {
+                            html += `<div class="q-source">${q.source}</div>`;
+                        }
+                        if (q.subParts && q.subParts.length > 0) {
+                            q.subParts.forEach(sp => {
+                                html +=
+                                    `<span class="sub-label">${sp}</span>`;
+                            });
+                        }
+                        html += `</div>`;
+                        html +=
+                            `<button class="hint-btn" data-hint-id="${q.id}" title="Lösungshinweis / Ansatzpunkte anzeigen" aria-label="Hinweis">?</button>`;
+                        html += `</div>`;
+                        html +=
+                            `<textarea data-question-id="${q.id}" placeholder="Ihre Antwort hier eingeben ..." rows="${q.isProblem ? '6' : '4'}"></textarea>`;
+                        html += `</div>`;
+                    });
+                });
+                examCard.innerHTML = html;
+                examCard.classList.remove('fade-out');
+                examCard.classList.add('fade-in');
+                setTimeout(() => examCard.classList.remove('fade-in'), 400);
+
+                // Attach hint button listeners
+                examCard.querySelectorAll('.hint-btn').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const hintId = this.dataset.hintId;
+                        showHint(hintId);
+                    });
+                });
+
+                // Attach auto-save to all textareas
+                examCard.querySelectorAll('textarea').forEach(ta => {
+                    ta.addEventListener('input', debouncedAutoSave);
+                    ta.addEventListener('blur', autoSave);
+                });
+
+                // Load saved data for this exam
+                loadAnswersForCurrentExam();
+                updateTabHighlight();
+            }
+
+            function showHint(hintId) {
+                // Find the hint text
+                let foundHint = null;
+                let foundTitle = '💡 Lösungshinweis';
+                for (const exam of examData) {
+                    for (const part of exam.parts) {
+                        for (const q of part.questions) {
+                            if (q.id === hintId) {
+                                foundHint = q.hint;
+                                foundTitle = q.isProblem ? '💡 Ansatzpunkte' : '💡 Lösungshinweis';
+                                break;
+                            }
+                        }
+                        if (foundHint) break;
+                    }
+                    if (foundHint) break;
+                }
+                if (foundHint) {
+                    hintTitle.textContent = foundTitle;
+                    hintContent.innerHTML = foundHint.replace(/\n/g, '<br>');
+                    hintOverlay.classList.add('visible');
+                    document.body.style.overflow = 'hidden';
+                    hintPanel.scrollTop = 0;
+                }
+            }
+
+            function hideHint() {
+                hintOverlay.classList.remove('visible');
+                document.body.style.overflow = '';
+            }
+
+            function updateTabHighlight() {
+                examTabs.forEach((tab, i) => {
+                    if (i === currentExamIndex) {
+                        tab.classList.add('active');
+                    } else {
+                        tab.classList.remove('active');
+                    }
+                });
+            }
+
+            function navigateTo(index) {
+                if (index === currentExamIndex) return;
+                if (index < 0 || index >= examData.length) return;
+                // Auto-save current before switching
+                saveAllAnswers();
+                currentExamIndex = index;
+                renderExam(index);
+                examCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+
+            // ──────────────────────────────────────
+            // EVENT LISTENERS
+            // ──────────────────────────────────────
+            btnPrev.addEventListener('click', () => navigateTo(currentExamIndex - 1));
+            btnNext.addEventListener('click', () => navigateTo(currentExamIndex + 1));
+            btnSave.addEventListener('click', () => {
+                saveAllAnswers();
+                showSaveStatus();
+            });
+            btnLoad.addEventListener('click', () => {
+                loadAnswersForCurrentExam();
+                showSaveStatus();
+            });
+            btnClear.addEventListener('click', clearAllData);
+
+            examTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const idx = parseInt(this.dataset.exam, 10);
+                    navigateTo(idx);
+                });
+            });
+
+            // Keyboard navigation
+            document.addEventListener('keydown', function(e) {
+                // Don't navigate if user is typing in a textarea
+                if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT') {
+                    // Allow Ctrl+S for save
+                    if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                        e.preventDefault();
+                        saveAllAnswers();
+                        showSaveStatus();
+                    }
+                    return;
+                }
+                if (e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    navigateTo(currentExamIndex - 1);
+                } else if (e.key === 'ArrowRight') {
+                    e.preventDefault();
+                    navigateTo(currentExamIndex + 1);
+                } else if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                    e.preventDefault();
+                    saveAllAnswers();
+                    showSaveStatus();
+                }
+            });
+
+            // Hint overlay close
+            hintClose.addEventListener('click', hideHint);
+            hintOverlay.addEventListener('click', function(e) {
+                if (e.target === hintOverlay) {
+                    hideHint();
+                }
+            });
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && hintOverlay.classList.contains('visible')) {
+                    hideHint();
+                }
+            });
+
+            // ──────────────────────────────────────
+            // INIT
+            // ──────────────────────────────────────
+            renderExam(0);
+            updateTabHighlight();
+
+            console.log(
+                '📚 Musterklausuren – Medien und ihre gesellschaftliche Bedeutung\n' +
+                '✅ Alle drei Klausuren geladen.\n' +
+                '💾 Speicherung via localStorage (bleibt nach Ausschalten erhalten).\n' +
+                '⌨️  Nutze ← → Pfeiltasten zum Navigieren, Strg+S zum Speichern.\n' +
+                '💡 Klicke auf ? für Lösungshinweise & Ansatzpunkte.'
+            );
+        })();
+    </script>
+</body>
+</html>

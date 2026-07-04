@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studyguide – Medien und ihre gesellschaftliche Bedeutung</title>
+    <style>
+        /* ===== CSS-Variablen / Theme ===== */
+        :root {
+            --bg: #f9f7f5;
+            --surface: #ffffff;
+            --surface2: #f0ede8;
+            --text: #1e1c1a;
+            --text2: #3d3a36;
+            --accent: #b8860b;
+            --accent2: #d4a017;
+            --border: #d6cfc5;
+            --shadow: rgba(0, 0, 0, 0.08);
+            --radius: 12px;
+            --transition: 0.25s ease;
+            --font: 'Segoe UI', Roboto, system-ui, sans-serif;
+            --code-bg: #eae7e0;
+            --highlight: #fef3d5;
+            --scrollbar: #ccc;
+        }
+
+        body.dark {
+            --bg: #1b1a18;
+            --surface: #2a2824;
+            --surface2: #36322d;
+            --text: #e6e0d8;
+            --text2: #c5bdb3;
+            --border: #4a453e;
+            --shadow: rgba(0, 0, 0, 0.5);
+            --code-bg: #3a3530;
+            --highlight: #4d3e1f;
+            --scrollbar: #5a554e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            transition: background var(--transition), color var(--transition);
+            line-height: 1.6;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* ===== Scrollbar ===== */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--scrollbar);
+            border-radius: 10px;
+        }
+
+        /* ===== Layout ===== */
+        .app {
+            display: flex;
+            flex: 1;
+        }
+
+        /* ===== Sidebar ===== */
+        .sidebar {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            width: 280px;
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            padding: 1.5rem 1rem;
+            overflow-y: auto;
+            flex-shrink: 0;
+            transition: background var(--transition), border var(--transition);
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            z-index: 10;
+        }
+        .sidebar h2 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--accent);
+            letter-spacing: 0.3px;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--accent);
+            margin-bottom: 0.5rem;
+        }
+        .sidebar nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+            flex: 1;
+        }
+        .sidebar nav a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            color: var(--text2);
+            text-decoration: none;
+            transition: background var(--transition), color var(--transition);
+            border-left: 3px solid transparent;
+        }
+        .sidebar nav a:hover {
+            background: var(--surface2);
+            color: var(--text);
+            border-left-color: var(--accent);
+        }
+        .sidebar nav a.active {
+            background: var(--surface2);
+            color: var(--text);
+            border-left-color: var(--accent);
+            font-weight: 500;
+        }
+        .sidebar .theme-toggle {
+            margin-top: auto;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.6rem 0.75rem;
+            border-radius: 6px;
+            background: var(--surface2);
+            cursor: pointer;
+            font-size: 0.9rem;
+            border: none;
+            color: var(--text);
+            transition: background var(--transition);
+            width: 100%;
+        }
+        .sidebar .theme-toggle:hover {
+            background: var(--border);
+        }
+        .sidebar .theme-toggle .icon {
+            font-size: 1.2rem;
+        }
+
+        /* ===== Hauptinhalt ===== */
+        .main {
+            flex: 1;
+            padding: 2rem 2.5rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* ===== Header ===== */
+        .page-header {
+            margin-bottom: 2.5rem;
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 1.2rem;
+        }
+        .page-header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--accent);
+            letter-spacing: -0.5px;
+        }
+        .page-header .sub {
+            font-size: 1rem;
+            color: var(--text2);
+            margin-top: 0.2rem;
+        }
+
+        /* ===== Fortschrittsbalken ===== */
+        .progress-wrap {
+            position: sticky;
+            top: 0;
+            z-index: 5;
+            background: var(--bg);
+            padding: 0.5rem 0 0.2rem 0;
+            margin-bottom: 1.5rem;
+            transition: background var(--transition);
+        }
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .progress-bar .fill {
+            height: 100%;
+            width: 0%;
+            background: var(--accent);
+            transition: width 0.15s ease;
+            border-radius: 10px;
+        }
+
+        /* ===== Suchleiste ===== */
+        .search-wrap {
+            position: sticky;
+            top: 2.2rem;
+            z-index: 4;
+            background: var(--bg);
+            padding: 0.6rem 0 1rem 0;
+            transition: background var(--transition);
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        .search-wrap input {
+            flex: 1;
+            padding: 0.6rem 1rem;
+            border-radius: 30px;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text);
+            font-size: 0.95rem;
+            outline: none;
+            transition: border var(--transition), box-shadow var(--transition);
+        }
+        .search-wrap input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(184, 134, 11, 0.2);
+        }
+        .search-wrap input::placeholder {
+            color: var(--text2);
+            opacity: 0.7;
+        }
+        .search-wrap .clear-btn {
+            background: none;
+            border: none;
+            color: var(--text2);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0 0.5rem;
+            display: none;
+        }
+        .search-wrap .clear-btn.visible {
+            display: block;
+        }
+        .search-stats {
+            font-size: 0.85rem;
+            color: var(--text2);
+            margin-left: 0.5rem;
+            white-space: nowrap;
+        }
+
+        /* ===== Sektionen / Akkordeon ===== */
+        .section {
+            background: var(--surface);
+            border-radius: var(--radius);
+            box-shadow: 0 2px 8px var(--shadow);
+            margin-bottom: 1.8rem;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            transition: background var(--transition), border var(--transition), box-shadow var(--transition);
+        }
+        .section-header {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--surface2);
+            transition: background var(--transition);
+            user-select: none;
+        }
+        .section-header:hover {
+            background: var(--border);
+        }
+        .section-header h2 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+        .section-header .badge {
+            font-size: 0.75rem;
+            background: var(--accent);
+            color: #fff;
+            padding: 0.2rem 0.7rem;
+            border-radius: 30px;
+            margin-left: 0.75rem;
+            font-weight: 500;
+        }
+        .section-header .arrow {
+            font-size: 1.2rem;
+            color: var(--text2);
+            transition: transform var(--transition);
+        }
+        .section.open .section-header .arrow {
+            transform: rotate(180deg);
+        }
+        .section-body {
+            padding: 1.5rem;
+            display: none;
+            border-top: 1px solid var(--border);
+        }
+        .section.open .section-body {
+            display: block;
+        }
+
+        /* ===== Inhaltsformatierung ===== */
+        .section-body h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 1.5rem 0 0.6rem 0;
+            color: var(--accent);
+        }
+        .section-body h3:first-of-type {
+            margin-top: 0;
+        }
+        .section-body h4 {
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin: 1.2rem 0 0.4rem 0;
+            color: var(--text);
+        }
+        .section-body p {
+            margin: 0 0 0.8rem 0;
+        }
+        .section-body ul,
+        .section-body ol {
+            margin: 0 0 0.8rem 1.8rem;
+        }
+        .section-body li {
+            margin-bottom: 0.3rem;
+        }
+        .section-body blockquote {
+            border-left: 4px solid var(--accent);
+            background: var(--surface2);
+            padding: 0.8rem 1.2rem;
+            margin: 0.8rem 0;
+            border-radius: 0 6px 6px 0;
+            font-style: italic;
+            color: var(--text2);
+        }
+        .section-body blockquote p {
+            margin: 0;
+        }
+        .section-body code {
+            background: var(--code-bg);
+            padding: 0.1rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.9em;
+            color: var(--text);
+        }
+        .section-body table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0 1.2rem 0;
+            font-size: 0.95rem;
+        }
+        .section-body th,
+        .section-body td {
+            border: 1px solid var(--border);
+            padding: 0.5rem 0.75rem;
+            text-align: left;
+            vertical-align: top;
+        }
+        .section-body th {
+            background: var(--surface2);
+            font-weight: 600;
+        }
+        .section-body tr:nth-child(even) {
+            background: var(--bg);
+        }
+        .section-body .glossar-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 0.4rem 1.2rem;
+            margin: 0.8rem 0;
+        }
+        .section-body .glossar-grid .term {
+            font-weight: 600;
+            color: var(--accent);
+        }
+        .section-body .glossar-grid .def {
+            color: var(--text2);
+        }
+        .section-body .highlight {
+            background: var(--highlight);
+            padding: 0 0.2rem;
+            border-radius: 3px;
+            transition: background var(--transition);
+        }
+        .section-body .highlight-search {
+            background: #ffd966;
+            color: #000;
+            padding: 0 0.2rem;
+            border-radius: 3px;
+        }
+        body.dark .section-body .highlight-search {
+            background: #b8860b;
+            color: #fff;
+        }
+
+        .section-body .merksatz {
+            background: var(--surface2);
+            border-left: 4px solid var(--accent2);
+            padding: 0.6rem 1rem;
+            border-radius: 0 6px 6px 0;
+            margin: 0.8rem 0;
+        }
+
+        /* ===== Quiz / Karteikarten (Glossar interaktiv) ===== */
+        .quiz-area {
+            margin-top: 2.5rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid var(--border);
+        }
+        .quiz-area h3 {
+            font-size: 1.3rem;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+        .quiz-area .quiz-desc {
+            color: var(--text2);
+            margin-bottom: 1rem;
+        }
+        .flashcard {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.2rem 1.5rem;
+            margin-bottom: 0.8rem;
+            cursor: pointer;
+            transition: background var(--transition), border var(--transition);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .flashcard:hover {
+            background: var(--surface2);
+        }
+        .flashcard .term {
+            font-weight: 600;
+            font-size: 1.05rem;
+            color: var(--text);
+        }
+        .flashcard .def {
+            color: var(--text2);
+            font-size: 0.95rem;
+            flex: 1;
+            margin-left: 1.5rem;
+            display: none;
+        }
+        .flashcard.open .def {
+            display: block;
+        }
+        .flashcard .toggle-icon {
+            font-size: 1.2rem;
+            color: var(--text2);
+            transition: transform var(--transition);
+        }
+        .flashcard.open .toggle-icon {
+            transform: rotate(180deg);
+        }
+        .flashcard .hint {
+            font-size: 0.8rem;
+            color: var(--text2);
+            opacity: 0.6;
+            margin-left: 0.5rem;
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 820px) {
+            .app {
+                flex-direction: column;
+            }
+            .sidebar {
+                position: relative;
+                height: auto;
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+                padding: 1rem;
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+                align-items: center;
+            }
+            .sidebar h2 {
+                width: 100%;
+                margin-bottom: 0.2rem;
+            }
+            .sidebar nav {
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 0.2rem 0.6rem;
+                flex: 1 1 100%;
+            }
+            .sidebar nav a {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.8rem;
+                border-left: none;
+                border-bottom: 2px solid transparent;
+            }
+            .sidebar nav a:hover,
+            .sidebar nav a.active {
+                border-left-color: transparent;
+                border-bottom-color: var(--accent);
+            }
+            .sidebar .theme-toggle {
+                margin-top: 0;
+                width: auto;
+                padding: 0.4rem 0.8rem;
+                font-size: 0.8rem;
+            }
+            .main {
+                padding: 1rem 1.2rem;
+            }
+            .page-header h1 {
+                font-size: 1.8rem;
+            }
+            .section-body {
+                padding: 1rem;
+            }
+            .section-body table {
+                font-size: 0.85rem;
+            }
+            .section-body .glossar-grid {
+                grid-template-columns: 1fr;
+                gap: 0.2rem;
+            }
+            .section-body .glossar-grid .term {
+                margin-top: 0.4rem;
+            }
+            .search-wrap {
+                top: 0;
+                flex-wrap: wrap;
+            }
+            .search-stats {
+                margin-left: 0;
+                width: 100%;
+            }
+            .flashcard {
+                flex-wrap: wrap;
+            }
+            .flashcard .def {
+                margin-left: 0;
+                flex-basis: 100%;
+                margin-top: 0.3rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-header h1 {
+                font-size: 1.5rem;
+            }
+            .section-header h2 {
+                font-size: 1.1rem;
+            }
+            .section-header .badge {
+                display: none;
+            }
+        }
+
+        /* ===== Utility ===== */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+        .mb-0 {
+            margin-bottom: 0;
+        }
+        .mt-1 {
+            margin-top: 0.5rem;
+        }
+        .text-center {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app">
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar" role="navigation" aria-label="Inhaltsnavigation">
+        <h2>📖 Studyguide</h2>
+        <nav id="sidebarNav">
+            <a href="#sec-1" data-target="sec-1">1. Medien &amp; Medienbegriff</a>
+            <a href="#sec-2" data-target="sec-2">2. Basistheorie McLuhan</a>
+            <a href="#sec-3" data-target="sec-3">3. Grundsätze Rundfunk</a>
+            <a href="#sec-7" data-target="sec-7">7. Medienwirkungen &amp; Yale</a>
+            <a href="#sec-9" data-target="sec-9">9. Schweigespirale</a>
+            <a href="#sec-11" data-target="sec-11">11/12. Hostile Media &amp; Kommentare</a>
+            <a href="#glossar" data-target="glossar">📘 Glossar</a>
+        </nav>
+        <button class="theme-toggle" id="themeToggle" aria-label="Dark/Light-Modus umschalten">
+            <span class="icon" id="themeIcon">🌙</span>
+            <span id="themeLabel">Dark</span>
+        </button>
+    </aside>
+
+    <!-- ===== MAIN ===== -->
+    <main class="main">
+        <!-- Header -->
+        <header class="page-header">
+            <h1>Medien und ihre gesellschaftliche Bedeutung</h1>
+            <div class="sub">Studyguide – Sommer 2026 · 6 klausurrelevante Themenblöcke</div>
+        </header>
+
+        <!-- Fortschritt -->
+        <div class="progress-wrap">
+            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                <div class="fill" id="progressFill"></div>
+            </div>
+        </div>
+
+        <!-- Suche -->
+        <div class="search-wrap">
+            <input type="text" id="searchInput" placeholder="🔍 Im gesamten Guide suchen …" aria-label="Suche">
+            <button class="clear-btn" id="clearSearch" aria-label="Suche löschen">✕</button>
+            <span class="search-stats" id="searchStats"></span>
+        </div>
+
+        <!-- ===== SEKTIONEN ===== -->
+        <!-- Alle Sektionen sind per Akkordeon aufklappbar. Per Default alle offen? -->
+        <!-- Ich setze sie alle offen, aber mit der Möglichkeit zum Schließen -->
+        <div id="content">
+
+            <!-- 1. Medien und Medienbegriff -->
+            <section class="section open" id="sec-1">
+                <div class="section-header" role="button" tabindex="0" aria-expanded="true">
+                    <h2>1. Medien und Medienbegriff <span class="badge">Faulstich · Burkart · Pross · Schmidt/Zurstiege</span></h2>
+                    <span class="arrow">▾</span>
+                </div>
+                <div class="section-body">
+                    <h3>Der Medienbegriff nach Faulstich</h3>
+                    <p>„Medium“ wird in drei Zusammenhängen verwendet:</p>
+                    <ol>
+                        <li><strong>Alltagssprache</strong> – als Bezeichnung für „Mittel“ oder etwas Vermittelndes</li>
+                        <li><strong>Fachbegriff einzelner Disziplinen</strong> – z. B. „Medium Kunst“, „Medium Musik“; meist im übertragenen Sinne bzw. als „Instrument“ verstanden</li>
+                        <li><strong>Zentraler Begriff</strong> der Kommunikations- bzw. Medienwissenschaft <em>(Faulstich 2011)</em></li>
+                    </ol>
+
+                    <h3>Medium als vermittelter Prozess (Burkart)</h3>
+                    <p>Kommunikation ist stets ein vermittelter Prozess – auch in der interpersonalen Kommunikation nutzt man Sprache, Zeichen und Symbole. „Medium“ steht daher für:</p>
+                    <ul>
+                        <li><strong>personale Vermittlungsinstanzen</strong> (der Person selbst „anhaftend“)</li>
+                        <li><strong>technische Hilfsmittel</strong> zur Übertragung – sowohl in der Individualkommunikation (Telefon, WhatsApp) als auch in der Massenkommunikation (Zeitung, Radio, Fernsehen) <em>(Burkart 2019)</em></li>
+                    </ul>
+
+                    <h3>Differenzierung nach Pross</h3>
+                    <table>
+                        <thead><tr><th>Medientyp</th><th>Merkmal</th><th>Beispiel</th></tr></thead>
+                        <tbody>
+                            <tr><td>Primäre Medien</td><td>Menschlicher Elementarkontakt – keine Technik nötig</td><td>Sprache</td></tr>
+                            <tr><td>Sekundäre Medien</td><td>Technik nur auf Produktionsseite nötig</td><td>Druckerzeugnisse</td></tr>
+                            <tr><td>Tertiäre Medien</td><td>Technik bei Sender <strong>und</strong> Empfänger nötig</td><td>TV, Schallplatte</td></tr>
+                        </tbody>
+                    </table>
+                    <p><em>(Pross 1972)</em></p>
+
+                    <h3>Quartäre Medien (Burkart)</h3>
+                    <p>Internetbasierte Tertiärmedien. Anders als klassische Tertiärmedien lassen sie sich nicht über die Eigenschaften bestimmter Endgeräte definieren – die Online-Dienste sind mit ganz unterschiedlichen internetfähigen Geräten nutzbar.</p>
+                    <p><strong>Beispiele:</strong> E-Mail, IPTV, Voice over IP, Videokonferenz, WWW</p>
+                    <div class="merksatz">📌 <strong>Merksatz:</strong> Traditionelles TV = tertiär, IPTV = quartär · Papierbrief = sekundär, E-Mail = quartär</div>
+
+                    <h3>Komponenten-Ebenen des Medienbegriffs (Schmidt/Zurstiege)</h3>
+                    <ol>
+                        <li><strong>Kommunikationsinstrumente</strong> – natürliche Sprachen, materielle Zeichen</li>
+                        <li><strong>Medientechniken</strong> – zur Herstellung/Verbreitung von Medienangeboten</li>
+                        <li><strong>Institutionelle Einrichtungen</strong> – z. B. Zeitungsverlage, TV-Anstalten</li>
+                        <li><strong>Die Medienangebote selbst</strong> – entstehen aus dem Zusammenwirken der ersten drei Ebenen (z. B. Zeitungsbeiträge, Sendungen)</li>
+                    </ol>
+
+                    <h3>Phasen der Mediengeschichte (Faulstich)</h3>
+                    <table>
+                        <thead><tr><th>Phase</th><th>Zeitraum</th><th>Dominanz</th></tr></thead>
+                        <tbody>
+                            <tr><td>A</td><td>bis ca. 1500</td><td>Primär-/Mensch-Medien</td></tr>
+                            <tr><td>B</td><td>ca. 1500–1900</td><td>Sekundär-/Druckmedien (erst Individual-, dann Massenmedien)</td></tr>
+                            <tr><td>C</td><td>ca. 1900–2000</td><td>Tertiär-/elektronische Medien (überwiegend Massenmedien)</td></tr>
+                            <tr><td>D</td><td>ab ca. 2000</td><td>Quartär-/digitale Medien, Trend zur Individualnutzung</td></tr>
+                        </tbody>
+                    </table>
+                    <p><strong>Für die Klausur wichtig:</strong> Reihenfolge &amp; Kennzeichen der 4 Phasen; Zuordnung konkreter Medien zu primär/sekundär/tertiär/quartär.</p>
+                </div>
+            </section>
+
+            <!-- 2. Basistheorie von McLuhan -->
+            <section class="section open" id="sec-2">
+                <div class="section-header" role="button" tabindex="0" aria-expanded="true">
+                    <h2>2. Basistheorie von McLuhan <span class="badge">Medium = Botschaft</span></h2>
+                    <span class="arrow">▾</span>
+                </div>
+                <div class="section-body">
+                    <h3>Der Medienbegriff bei McLuhan</h3>
+                    <p>Marshall McLuhan (Kanadier) vertritt einen sehr weiten, teils unspezifischen Medienbegriff. „Medium“ beschränkt sich für ihn <strong>nicht</strong> auf Mittel der Informationsübertragung – vielmehr sind alle möglichen Techniken als Medien zu verstehen. Ein Buch ist für ihn ebenso ein Medium wie eine Eisenbahn oder ein Hammer.</p>
+                    <p>Besonderheit: Auch die <strong>Inhalte von Medien können selbst wieder Medien sein</strong> – der Inhalt eines Films ist das Buch, der Inhalt eines Buchs ist die Sprache.</p>
+
+                    <h3>Medien als Erweiterungen von Körper und Sinnen</h3>
+                    <p>Neue Technologien sind laut McLuhan Erweiterungen des Körpers und der Sinne:</p>
+                    <ul>
+                        <li>Hammer → Erweiterung der Hand</li>
+                        <li>Kamera → Erweiterung des Auges</li>
+                        <li>Radio → Erweiterung des Ohrs</li>
+                    </ul>
+                    <p>Da Wahrnehmung das Zusammenspiel der Sinne ist, erzeugt jede neue Medientechnik veränderte Wahrnehmungsmuster – und damit verändertes Alltagsverhalten.</p>
+
+                    <h3>„The Medium is the message“</h3>
+                    <p>McLuhans berühmtestes Zitat. <strong>Kernidee:</strong> Nicht der Inhalt (die „Botschaft“) einer Kommunikation bestimmt ihre gesellschaftliche Wirkung, sondern das Medium bzw. die Technik selbst.</p>
+                    <ul>
+                        <li><strong>Begründung</strong> <em>(sinngemäß nach McLuhan 1992):</em> Ob eine Maschine dieses oder jenes Produkt herstellt, ist für die Veränderungen, die sie in der menschlichen Arbeitswelt bewirkt, letztlich zweitrangig – entscheidend ist die Tatsache der Maschine an sich, nicht ihr konkretes Produkt.</li>
+                        <li><strong>Analogie</strong> <em>(sinngemäß nach Meyrowitz 1990):</em> Wer die Bedeutung des Automobils verstehen will, sollte nicht nur die Passagiere betrachten, sondern die Tatsache, dass ein neues Transportmittel entstanden ist. Genauso greift es zu kurz, bei Medien nur auf den Inhalt zu achten und die Technik selbst zu ignorieren.</li>
+                        <li><strong>Fazit</strong> <em>(McLuhan 1992, S. 18):</em> Die „Botschaft“ jedes Mediums bzw. jeder Technik liegt in der Veränderung von Maßstab, Tempo oder Schema, die sie der menschlichen Situation bringt.</li>
+                    </ul>
+                    <p><strong>Für die Klausur wichtig:</strong> Das Zitat selbst + die Grundidee (Medium wichtiger als Inhalt) + mindestens ein Beispiel/Begründung dafür formulieren können.</p>
+                </div>
+            </section>
+
+            <!-- 3. Wesentliche Grundsätze des Rundfunks -->
+            <section class="section open" id="sec-3">
+                <div class="section-header" role="button" tabindex="0" aria-expanded="true">
+                    <h2>3. Wesentliche Grundsätze des Rundfunks <span class="badge">Ländersache · Dual · Staatsferne</span></h2>
+                    <span class="arrow">▾</span>
+                </div>
+                <div class="section-body">
+                    <h3>Rundfunk ist Ländersache</h3>
+                    <p>Rundfunk gilt als Kulturgut und ist daher Ländersache. Im öffentlich-rechtlichen Bereich zeigt sich dies an den jeweiligen Landesrundfunkanstalten (z. B. WDR, HR). Zusätzlich haben die Länder im Rahmen ihrer Landesmediengesetze Landesmedienanstalten geschaffen (u. a. zuständig für Lizenzierung und Beaufsichtigung privater Sender).</p>
+
+                    <h3>Die duale Rundfunkordnung</h3>
+                    <p>Öffentlich-rechtlicher und privater Rundfunk existieren nebeneinander. Die <strong>Grundversorgung</strong> obliegt den öffentlich-rechtlichen Anstalten, weil:</p>
+                    <ul>
+                        <li>sie technisch von allen empfangen werden können</li>
+                        <li>sie wegen der Gebührenteilfinanzierung nicht im gleichen Maße auf Einschaltquoten angewiesen sind wie Privatsender</li>
+                        <li>für sie strenge Maßgaben des <strong>Binnenpluralismus</strong> gelten</li>
+                    </ul>
+                    <p>Der Privatfunk muss dafür nicht dieselben hohen Vielfaltsanforderungen erfüllen, da hier Vielfalt über <strong>Außenpluralismus</strong> entsteht.</p>
+
+                    <table>
+                        <thead><tr><th>Begriff</th><th>Bedeutung</th></tr></thead>
+                        <tbody>
+                            <tr><td>Binnenpluralismus</td><td>Der einzelne Anbieter sorgt selbst für ein vielfältiges Angebot/Meinungsspektrum</td></tr>
+                            <tr><td>Außenpluralismus</td><td>Vielfalt entsteht durch eine hohe Zahl unterschiedlicher Anbieter insgesamt</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h3>Staatsferne des Rundfunks</h3>
+                    <p>Der Staat darf den organisatorischen Rahmen für Vielfalt regeln, muss den Rundfunk aber frei von staatlicher Beeinflussung halten – <strong>weder personell noch inhaltlich</strong> darf er auf die Programmgestaltung Einfluss nehmen.</p>
+
+                    <h3>Rundfunkauftrag nach § 26 Medienstaatsvertrag (MStV)</h3>
+                    <ul>
+                        <li><strong>Abs. 1:</strong> Umfassender Überblick über internationales, europäisches, nationales und regionales Geschehen; Angebote dienen Bildung, Information, Beratung und Unterhaltung, mit besonderem Fokus auf Kulturbeiträgen.</li>
+                        <li><strong>Abs. 2:</strong> Grundsätze der <strong>Objektivität, Unparteilichkeit, Meinungsvielfalt und Ausgewogenheit</strong> sind zu berücksichtigen.</li>
+                    </ul>
+
+                    <h3>Führungs- und Aufsichtsgremien</h3>
+                    <p>Der <strong>Rundfunkrat</strong> setzt sich aus Vertretern gesellschaftlich relevanter Gruppen zusammen (u. a. Kirchen, Verbände, Parteien, Presse, Kommunen, Universitäten). Er wählt und kontrolliert Intendant/in und Verwaltungsrat.</p>
+                    <p><strong>Für die Klausur wichtig:</strong> Die vier Grundsätze (Ländersache, duale Ordnung, Staatsferne, § 26 MStV) + Begriffe Binnen-/Außenpluralismus sicher erklären können.</p>
+                </div>
+            </section>
+
+            <!-- 7. Medienwirkungen & Yale -->
+            <section class="section open" id="sec-7">
+                <div class="section-header" role="button" tabindex="0" aria-expanded="true">
+                    <h2>7. Medienwirkungen &amp; Yale Studies <span class="badge">Definition · 6 Ebenen · 4 Phasen</span></h2>
+                    <span class="arrow">▾</span>
+                </div>
+                <div class="section-body">
+                    <h3>Was sind Medienwirkungen?</h3>
+                    <p>Medienwirkungsforschung untersucht, ob und wie Medien Menschen und Gesellschaften verändern – nicht nur im Sinne von Einstellungsänderungen, sondern auch bezüglich Wissen, Wahrnehmungen, Emotionen, Verhalten und sozialen Folgen.</p>
+                    <p><strong>Definition</strong> <em>(sinngemäß nach Schulz 1982):</em> Medienwirkungen umfassen im weiten Sinne alle Veränderungen, die sich – auch nur teilweise oder im Zusammenspiel mit anderen Faktoren – auf Medien bzw. deren Mitteilungen zurückführen lassen.</p>
+                    <blockquote>Wichtig: Medien wirken selten isoliert – die Wirkung hängt davon ab, wer welche Inhalte nutzt, in welcher Situation, und welche Vorerfahrungen/Einstellungen/sozialen Kontexte eine Rolle spielen.</blockquote>
+
+                    <h3>Sechs Ebenen von Medienwirkungen (Bryant/Zillmann)</h3>
+                    <ol>
+                        <li><strong>Kognitive Effekte</strong> – Wissen und Wahrnehmungen</li>
+                        <li><strong>Einstellungseffekte</strong> – Meinungen, Überzeugungen, Werte</li>
+                        <li><strong>Affektive Effekte</strong> – Emotionen (z. B. Angst, Euphorie)</li>
+                        <li><strong>Konative Effekte</strong> – Verhalten</li>
+                        <li><strong>Physiologische Effekte</strong> – Erregung/körperliche Reaktionen</li>
+                        <li><strong>Soziale Effekte</strong> – gesellschaftliche Auswirkungen</li>
+                    </ol>
+
+                    <h3>Die vier Phasen der Medienwirkungsforschung</h3>
+                    <table>
+                        <thead><tr><th>Phase</th><th>Zeitraum</th><th>Kernaussage</th><th>Modell/Konzept</th></tr></thead>
+                        <tbody>
+                            <tr><td>1 – Propaganda &amp; Medienallmacht</td><td>1910–ca. 1945</td><td>Medien wirken stark, direkt und einheitlich auf große Gruppen</td><td>Stimulus-Response-Modell (Magic Bullet / Transmission Belt / Hypodermic Needle)</td></tr>
+                            <tr><td>2 – Begrenzte Medienwirkungen</td><td>1940er–1970er</td><td>Wirkung ist begrenzt, hängt von individuellen/sozialen Faktoren ab</td><td>S-O-R-Modell (Stimulus-Organismus-Response), Selective Exposure</td></tr>
+                            <tr><td>3 – Neue Perspektiven</td><td>ab ca. 1970</td><td>Frage nicht mehr „stark oder schwach“, sondern „wer wirkt auf wen, wie, unter welchen Bedingungen“ – Rezipient gilt als aktiv</td><td>–</td></tr>
+                            <tr><td>4 – Erweiterte Betrachtungen</td><td>seit 1990er</td><td>Fokus auf digitale/interaktive/algorithmische Medien, Emotionen, Kognition, psychologische Verarbeitung</td><td>–</td></tr>
+                        </tbody>
+                    </table>
+                    <blockquote>Roter Faden: Die Forschung bewegt sich von einer Vorstellung starker, direkter Medienmacht hin zu differenzierteren, bedingten und vielfältigeren Vorstellungen von Medienwirkung.</blockquote>
+
+                    <h3>Persuasion – Definition</h3>
+                    <p>Der gezielte Versuch, die Einstellung einer Person durch Kommunikation zu verändern.<br>
+                    <strong>Merkmale:</strong> zielgerichtet handelnder Sender · Kommunikation als Mittel zur Zielerreichung · Rezipient hat freien Willen, wird nicht gezwungen. <em>(Dainton &amp; Zelley 2019)</em></p>
+
+                    <h3>Die Yale Studies (Hovland)</h3>
+                    <ul>
+                        <li><strong>Hintergrund:</strong> Sozialpsychologe Carl I. Hovland und sein Team führten 1946–1961 an der Yale University insgesamt 50 Experimente zur Persuasion durch.</li>
+                        <li><strong>Ziel:</strong> Untersuchen, wie Kommunikation zur Veränderung von Einstellungen beiträgt – Entwicklung einer „wissenschaftlichen Rhetorik“.</li>
+                        <li><strong>Vorgehensweise:</strong> Untersucht wurden Merkmale des Kommunikators, der Botschaft, des Rezipienten und teilweise der Situation.</li>
+                    </ul>
+
+                    <h4>Wesentliche Befunde zur Botschaft</h4>
+                    <p><strong>Ein- vs. zweiseitige Argumentation</strong></p>
+                    <ul>
+                        <li>Zweiseitige Argumentation kann widerstandsfähiger gegenüber späterer Gegenargumentation machen (<strong>Inoculation Theory</strong>) – wirkt aber vor allem bei gebildetem Publikum; bei geringerem Bildungsstand kann einseitige Argumentation sinnvoller sein.</li>
+                        <li>Bei komplexen Themen ist es meist überzeugender, wenn der Kommunikator die Schlussfolgerung selbst formuliert, statt sie dem Publikum zu überlassen.</li>
+                    </ul>
+
+                    <p><strong>Furchtappelle</strong></p>
+                    <ul>
+                        <li>Frühere Befunde (Hovland et al. 1953): schwache Furchtappelle wirkten überzeugender als starke. Neuere Forschung ist uneinheitlich, spricht aber eher dafür, dass stärkere Angstappelle auch stärkere Wirkung haben können.</li>
+                        <li>Entscheidend ist die Reaktion des Publikums: Bei übertrieben starken Appellen kann die Botschaft ignoriert werden → <strong>Bumerang-Effekt</strong>.</li>
+                        <li>Schwächere Furchtappelle eignen sich eher, wenn ein bestehendes Verhalten beendet werden soll („Bestrafungssituation“); stärkere Furchtappelle sind wirksamer, wenn ein zukünftiges Verhalten verhindert werden soll („Vermeidungssituation“).</li>
+                    </ul>
+                    <p><strong>Für die Klausur wichtig:</strong> Definition Medienwirkungen · die 6 Ebenen · grober Überblick der 4 Phasen · Yale-Befunde zur Botschaft (ein-/zweiseitig, Furchtappelle).</p>
+                </div>
+            </section>
+
+            <!-- 9. Schweigespirale -->
+            <section class="section open" id="sec-9">
+                <div class="section-header" role="button" tabindex="0" aria-expanded="true">
+                    <h2>9. Grundannahmen zur Schweigespirale <span class="badge">Noelle-Neumann · Isolationsfurcht</span></h2>
+                    <span class="arrow">▾</span>
+                </div>
+                <div class="section-body">
+                    <h3>Elisabeth Noelle-Neumann</h3>
+                    <p>Deutsche Kommunikationswissenschaftlerin, Gründerin des Instituts für Demoskopie Allensbach, zentrale Vertreterin der empirischen Meinungsforschung in Deutschland. Veröffentlichung der Theorie: <strong>1974</strong>.</p>
+                    <p><strong>Zentrale Fragestellung:</strong> Warum äußern Menschen ihre Meinung öffentlich – oder halten sie bewusst zurück?</p>
+
+                    <h3>Grundannahme: Isolationsfurcht</h3>
+                    <p>Menschen haben in allen Gesellschaften Angst davor, ausgegrenzt, lächerlich gemacht oder isoliert zu werden. Diese Isolationsfurcht erzeugt einen Anpassungsdruck: Viele schließen sich lieber der vorherrschenden Meinung an – dadurch entsteht soziale Integration.</p>
+
+                    <h3>Öffentliche Meinung</h3>
+                    <p><em>(sinngemäß nach Noelle-Neumann):</em> Wertgeladene, insbesondere moralisch aufgeladene Meinungen und Verhaltensweisen, die man bei fest etablierter gesellschaftlicher Übereinstimmung (z. B. Sitte, Dogma) öffentlich zeigen <strong>muss</strong>, wenn man sich nicht isolieren will; bei im Wandel begriffenen, „flüssigen“ Themen kann man sie zeigen, ohne sich zu isolieren.</p>
+
+                    <h3>Quasi-statistisches Organ &amp; Umweltbeobachtung</h3>
+                    <p>Der Mensch ist gezwungen, seine Umwelt ständig zu beobachten, um das Meinungsklima beurteilen zu können. Mit Hilfe eines <strong>quasi-statistischen Organs</strong> kann er Veränderungen in der Meinungsverteilung erkennen.</p>
+                    <p>Zwei Quellen für das Urteil über das Meinungsklima:</p>
+                    <ol>
+                        <li>unmittelbare Umweltbeobachtung (Signale von Billigung/Missbilligung)</li>
+                        <li>die Medien</li>
+                    </ol>
+
+                    <h3>Der dynamische Prozess der Schweigespirale</h3>
+                    <p>Wer eine Zunahme der Zustimmung zur eigenen Meinung wahrnimmt, fühlt sich gestärkt und äußert sich öffentlicher; wer einen Rückgang wahrnimmt, verfällt eher in Schweigen. Dadurch wirken die „Lauten“ stärker, als sie tatsächlich sind, und die „Leisen“ schwächer – es entsteht eine verzerrte Wahrnehmung der wahren Mehrheitsverhältnisse.</p>
+                    <p>Dieser sich selbst verstärkende Prozess kann eine Meinung bis auf einen <strong>„harten Kern“</strong> bzw. eine <strong>„Avantgarde“</strong> zurückdrängen – Gruppen, die keine Isolation fürchten oder sie bewusst in Kauf nehmen. Nach Noelle-Neumann liegt gerade bei diesen Gruppen die Möglichkeit, gesellschaftlichen Wandel anzustoßen.</p>
+                    <p><strong>Für die Klausur wichtig:</strong> Isolationsfurcht als Kernmechanismus · quasi-statistisches Organ · die zwei Quellen der Umweltbeobachtung · der sich selbst verstärkende, „spiralförmige“ Charakter des Prozesses.</p>
+                </div>
+            </section>
+
+            <!-- 11/12. Hostile Media & Nutzerkommentare -->
+            <section class="section open" id="sec-11">
+                <div class="section-header" role="button" tabindex="0" aria-expanded="true">
+                    <h2>11/12. Objektivität aus Nutzersicht <span class="badge">Hostile Media · Nasty Effect</span></h2>
+                    <span class="arrow">▾</span>
+                </div>
+                <div class="section-body">
+                    <h3>Der Hostile-Media-Effekt</h3>
+                    <p>Wie realistisch oder verzerrt Medieninhalte wahrgenommen werden, hängt entscheidend von der Bewertung der Nutzer ab. Ein vielfach nachgewiesenes Phänomen: Mediennutzer empfinden auch neutrale Berichterstattung häufig als unausgewogen und zum Nachteil der eigenen Position. Besonders Personen mit klarer Position zu einem Thema neigen dazu, eine „feindselige“ (hostile) Verzerrung zugunsten der Gegenposition wahrzunehmen – selbst wenn der Beitrag eigentlich neutral ist.</p>
+                    <p><strong>Beispielstudie (Vallone et al. 1985):</strong> Pro-israelische, pro-arabische und neutrale Zuschauer bewerteten denselben TV-Beitrag zum Nahost-Konflikt (Beirut-Massaker). Ergebnis: Beide parteiischen Gruppen empfanden die identische Berichterstattung jeweils als zugunsten der Gegenseite verzerrt (z. B. bei der Einschätzung der Darstellung Israels oder der vermuteten Meinung der Redakteure) – die neutrale Gruppe lag mit ihrer Einschätzung jeweils dazwischen.</p>
+
+                    <h3>Einfluss von Nutzerkommentaren auf die wahrgenommene journalistische Qualität</h3>
+                    <p><strong>Prinzip:</strong> In Studien lesen verschiedene Testgruppen denselben Artikel, sehen aber unterschiedliche Nutzerkommentare darunter – anschließend wird geprüft, wie die Kommentare die Bewertung des Artikels beeinflussen.</p>
+                    <p><strong>Befunde:</strong></p>
+                    <ul>
+                        <li>Loben Kommentare die Unparteilichkeit, wird auch der Artikel als unparteiischer eingeschätzt (und umgekehrt bei Kritik).</li>
+                        <li>Loben Kommentare die Genauigkeit, wird auch die Genauigkeit positiver eingeschätzt (und umgekehrt).</li>
+                        <li>Unhöfliche Kommentare (z. B. Beleidigungen) führen dazu, dass der Artikel selbst eher als voreingenommen wahrgenommen wird → <strong>„Nasty Effect“</strong>.</li>
+                    </ul>
+                    <p><strong>Konsequenz</strong> <em>(sinngemäß nach Kümpel &amp; Springer 2016):</em> Kommentare von anonymen Nutzern dienen als Anhaltspunkte für die eigene Bewertung eines Artikels. Da journalistische Arbeit durch negative Kommentare verzerrt oder abgewertet werden kann, wird die Entwicklung von Moderationsstrategien für Online-Redaktionen zunehmend wichtiger.</p>
+                    <p><strong>Für die Klausur wichtig:</strong> Definition Hostile Media Effekt + ein Beispiel (Vallone-Studie) · die drei Kernbefunde zu Nutzerkommentaren (Unparteilichkeit, Genauigkeit, Nasty Effect).</p>
+                </div>
+            </section>
+
+            <!-- ===== GLOSSAR ===== -->
+            <section class="section open" id="glossar">
+                <div class="section-header" role="button" tabindex="0" aria-expanded="true">
+                    <h2>📘 Glossar der wichtigsten Begriffe</h2>
+                    <span class="arrow">▾</span>
+                </div>
+                <div class="section-body">
+                    <div class="glossar-grid">
+                        <span class="term">Primäre/Sekundäre/Tertiäre/Quartäre Medien</span>
+                        <span class="def">Klassifikation nach Pross/Burkart je nach benötigter Technik bei Sender/Empfänger</span>
+                        <span class="term">Binnenpluralismus</span>
+                        <span class="def">Vielfalt innerhalb des Angebots eines einzelnen Rundfunkanbieters</span>
+                        <span class="term">Außenpluralismus</span>
+                        <span class="def">Vielfalt durch viele unterschiedliche Rundfunkanbieter</span>
+                        <span class="term">Staatsferne</span>
+                        <span class="def">Staat regelt Rahmenbedingungen, nimmt aber keinen Einfluss auf Programminhalte</span>
+                        <span class="term">Stimulus-Response-Modell</span>
+                        <span class="def">Frühe Vorstellung: Medienbotschaft löst direkt eine Reaktion aus (Phase 1)</span>
+                        <span class="term">S-O-R-Modell</span>
+                        <span class="def">Rezipient als „mediatisierender Organismus“ zwischen Reiz und Reaktion (Phase 2)</span>
+                        <span class="term">Inoculation Theory</span>
+                        <span class="def">Zweiseitige Argumentation „immunisiert“ gegen spätere Gegenargumente</span>
+                        <span class="term">Bumerang-Effekt</span>
+                        <span class="def">Zu starke Furchtappelle führen dazu, dass die Botschaft ignoriert wird</span>
+                        <span class="term">Isolationsfurcht</span>
+                        <span class="def">Angst vor sozialer Ausgrenzung als Antrieb der Schweigespirale</span>
+                        <span class="term">Quasi-statistisches Organ</span>
+                        <span class="def">Fähigkeit, das Meinungsklima der Umgebung „automatisch“ einzuschätzen</span>
+                        <span class="term">Hostile-Media-Effekt</span>
+                        <span class="def">Wahrnehmung neutraler Berichterstattung als parteiisch gegen die eigene Position</span>
+                        <span class="term">Nasty Effect</span>
+                        <span class="def">Unhöfliche Kommentare lassen den Artikel selbst voreingenommener wirken</span>
+                    </div>
+
+                    <!-- Interaktive Karteikarten (Quiz) -->
+                    <div class="quiz-area">
+                        <h3>🧠 Karteikarten – Begriff &amp; Definition</h3>
+                        <p class="quiz-desc">Klicke auf einen Begriff, um die dazugehörige Definition ein- oder auszublenden.</p>
+                        <div id="flashcardContainer">
+                            <!-- wird per JS aus dem Glossar befüllt -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Hinweis am Ende -->
+            <p style="margin-top: 2rem; font-size: 0.9rem; color: var(--text2); border-top: 1px solid var(--border); padding-top: 1rem;">
+                <em>Tipp zur Verwendung: Diesen Guide zum Verstehen und Wiederholen nutzen – zum Selbsttest eignen sich die separat erstellten Musterklausuren besser, da dort die Antworten nicht direkt neben der Frage stehen.</em>
+            </p>
+        </div><!-- /content -->
+    </main>
+</div>
+
+<script>
+    (function() {
+        "use strict";
+
+        // ===== DOM-Referenzen =====
+        const sections = document.querySelectorAll('.section');
+        const headers = document.querySelectorAll('.section-header');
+        const sidebarLinks = document.querySelectorAll('#sidebarNav a');
+        const progressFill = document.getElementById('progressFill');
+        const searchInput = document.getElementById('searchInput');
+        const clearBtn = document.getElementById('clearSearch');
+        const searchStats = document.getElementById('searchStats');
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const themeLabel = document.getElementById('themeLabel');
+        const flashcardContainer = document.getElementById('flashcardContainer');
+
+        // ===== THEME =====
+        function getTheme() {
+            return document.body.classList.contains('dark') ? 'dark' : 'light';
+        }
+        function setTheme(theme) {
+            if (theme === 'dark') {
+                document.body.classList.add('dark');
+                themeIcon.textContent = '☀️';
+                themeLabel.textContent = 'Light';
+            } else {
+                document.body.classList.remove('dark');
+                themeIcon.textContent = '🌙';
+                themeLabel.textContent = 'Dark';
+            }
+            localStorage.setItem('studyguide-theme', theme);
+        }
+        // Load saved theme
+        const saved = localStorage.getItem('studyguide-theme');
+        if (saved === 'dark') setTheme('dark');
+        else if (saved === 'light') setTheme('light');
+        else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) setTheme('dark');
+        else setTheme('light');
+
+        themeToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            const current = getTheme();
+            setTheme(current === 'dark' ? 'light' : 'dark');
+        });
+
+        // ===== AKKORDEON =====
+        headers.forEach(header => {
+            header.addEventListener('click', function(e) {
+                const section = this.parentElement;
+                const isOpen = section.classList.contains('open');
+                // Optional: Nur einen offen lassen? Nein, wir lassen alle unabhängig.
+                // Aber wir toggeln.
+                if (isOpen) {
+                    section.classList.remove('open');
+                    this.setAttribute('aria-expanded', 'false');
+                } else {
+                    section.classList.add('open');
+                    this.setAttribute('aria-expanded', 'true');
+                }
+                // Aktualisiere Fortschritt
+                updateProgress();
+                updateSidebarActive();
+            });
+            header.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    this.click();
+                }
+            });
+        });
+
+        // ===== SIDEBAR AKTIV & SCROLL =====
+        function updateSidebarActive() {
+            let activeId = null;
+            // Finde die erste offene Sektion (oder die, die im Viewport ist)
+            const scrollPos = window.scrollY + 120;
+            sections.forEach(sec => {
+                const rect = sec.getBoundingClientRect();
+                const top = rect.top + window.scrollY;
+                if (top <= scrollPos) {
+                    activeId = sec.id;
+                }
+            });
+            sidebarLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.dataset.target === activeId) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        // Sanftes Scrollen bei Sidebar-Klick
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.dataset.target;
+                const targetEl = document.getElementById(targetId);
+                if (targetEl) {
+                    // Sektion öffnen, falls geschlossen
+                    if (!targetEl.classList.contains('open')) {
+                        targetEl.classList.add('open');
+                        const header = targetEl.querySelector('.section-header');
+                        if (header) header.setAttribute('aria-expanded', 'true');
+                    }
+                    targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    // Aktive Klasse setzen
+                    sidebarLinks.forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                }
+            });
+        });
+
+        // ===== FORTSCHRITT =====
+        function updateProgress() {
+            const total = sections.length;
+            let openCount = 0;
+            sections.forEach(sec => {
+                if (sec.classList.contains('open')) openCount++;
+            });
+            const pct = total > 0 ? Math.round((openCount / total) * 100) : 0;
+            progressFill.style.width = pct + '%';
+            progressFill.parentElement.setAttribute('aria-valuenow', pct);
+        }
+        updateProgress();
+
+        // ===== SUCHFUNKTION =====
+        function performSearch(query) {
+            const q = query.trim().toLowerCase();
+            const bodyTexts = document.querySelectorAll('.section-body');
+            let totalMatches = 0;
+
+            // Entferne alte Hervorhebungen
+            document.querySelectorAll('.highlight-search').forEach(el => {
+                const parent = el.parentNode;
+                parent.replaceChild(document.createTextNode(el.textContent), el);
+                parent.normalize();
+            });
+
+            if (q === '') {
+                clearBtn.classList.remove('visible');
+                searchStats.textContent = '';
+                return;
+            }
+
+            clearBtn.classList.add('visible');
+            let matchCount = 0;
+            bodyTexts.forEach(body => {
+                const text = body.textContent;
+                const lower = text.toLowerCase();
+                if (lower.includes(q)) {
+                    // Wir durchsuchen die Textknoten und ersetzen
+                    const walker = document.createTreeWalker(body, NodeFilter.SHOW_TEXT, null, false);
+                    const nodes = [];
+                    while (walker.nextNode()) nodes.push(walker.currentNode);
+                    nodes.forEach(node => {
+                        const content = node.textContent;
+                        const lowerContent = content.toLowerCase();
+                        if (lowerContent.includes(q)) {
+                            const parts = content.split(new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi'));
+                            if (parts.length > 1) {
+                                const frag = document.createDocumentFragment();
+                                parts.forEach(part => {
+                                    if (part.toLowerCase() === q) {
+                                        const mark = document.createElement('span');
+                                        mark.className = 'highlight-search';
+                                        mark.textContent = part;
+                                        frag.appendChild(mark);
+                                        matchCount++;
+                                    } else {
+                                        frag.appendChild(document.createTextNode(part));
+                                    }
+                                });
+                                node.parentNode.replaceChild(frag, node);
+                            }
+                        }
+                    });
+                }
+            });
+
+            totalMatches = matchCount;
+            searchStats.textContent = totalMatches > 0 ? `${totalMatches} Treffer` : 'Keine Treffer';
+        }
+
+        searchInput.addEventListener('input', function() {
+            performSearch(this.value);
+        });
+        clearBtn.addEventListener('click', function() {
+            searchInput.value = '';
+            performSearch('');
+            searchInput.focus();
+        });
+        // Escape zum Löschen
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                this.value = '';
+                performSearch('');
+                this.blur();
+            }
+        });
+
+        // ===== KARTEIKARTEN (Glossar interaktiv) =====
+        function buildFlashcards() {
+            const grid = document.querySelector('.glossar-grid');
+            if (!grid) return;
+            const terms = grid.querySelectorAll('.term');
+            const defs = grid.querySelectorAll('.def');
+            const pairs = [];
+            for (let i = 0; i < terms.length; i++) {
+                pairs.push({ term: terms[i].textContent.trim(), def: defs[i].textContent.trim() });
+            }
+            if (pairs.length === 0) return;
+
+            let html = '';
+            pairs.forEach((p, idx) => {
+                html += `
+                    <div class="flashcard" data-idx="${idx}" role="button" tabindex="0">
+                        <span class="term">${p.term}</span>
+                        <span class="def">${p.def}</span>
+                        <span class="toggle-icon">▾</span>
+                    </div>
+                `;
+            });
+            flashcardContainer.innerHTML = html;
+
+            // Eventlistener
+            document.querySelectorAll('.flashcard').forEach(card => {
+                card.addEventListener('click', function() {
+                    this.classList.toggle('open');
+                });
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.click();
+                    }
+                });
+            });
+        }
+        buildFlashcards();
+
+        // ===== SCROLL-EVENTS für Sidebar & Fortschritt (optional) =====
+        let scrollTimeout;
+        window.addEventListener('scroll', function() {
+            if (scrollTimeout) return;
+            scrollTimeout = setTimeout(() => {
+                updateSidebarActive();
+                scrollTimeout = null;
+            }, 50);
+        });
+
+        // ===== INIT =====
+        // Aktive Sidebar beim Laden
+        setTimeout(updateSidebarActive, 100);
+
+        // ===== TOUCH / MOBILE: SIDEBAR TOGGLE? Nicht nötig, da sie bei Mobile oben ist. =====
+
+        console.log('Studyguide interaktiv geladen. Viel Erfolg!');
+    })();
+</script>
+
+</body>
+</html>
